@@ -2,11 +2,12 @@ import React, { useState } from 'react'
 import loginSignUpImage from '../assest/login-animation.gif'
 import { BiSolidShow } from "react-icons/bi";
 import { BiSolidHide } from "react-icons/bi";
-import { Link } from 'react-router-dom'
-
+import { Link, useNavigate } from 'react-router-dom'
+import { ImageToBase64 } from '../utility/imageToBase64'
 
 
 const SignUp = () => {
+    const navigate = useNavigate()
   const [showPassWord, setShowPassWord] = useState(false)
   const [showConfirmPassWord, setShowConfirmPassWord] = useState(false)
   const [dataForm, setDataForm] = useState({
@@ -14,7 +15,8 @@ const SignUp = () => {
       lastName: 'Minh Nhật',
       email: 'nhat@gmail.com',
       password: '123456789',
-      confirmPassword: '123456789'
+      confirmPassword: '123456789',
+      image: ''
   })
 
   const handlerShowPassWord = () => {
@@ -34,6 +36,17 @@ const SignUp = () => {
       })
   }
 
+  const handleUploadProfileImage = async (e) => {
+    const data = await ImageToBase64(e.target.files[0])
+
+    setDataForm(pre => {
+      return {
+        ...pre,
+        image: data
+      }
+    })
+  }
+
     const handlerSubmit = (e) => {
         e.preventDefault();
         
@@ -41,6 +54,7 @@ const SignUp = () => {
         if(firstName && lastName && email && password && confirmPassword ) {
             if(password === confirmPassword) {
                 alert('Successfully!!!')
+                navigate('/login')
             } else {
                 alert('Password and confirm password is not equal')
             }
@@ -53,8 +67,15 @@ const SignUp = () => {
     <div className='p-3 md:p-4'>
       <div className='w-full max-w-sm m-auto bg-white flex flex-col items-center p-4'>
         {/* <h1 className='text-center text-2xl font-bold'>Sign up</h1> */}
-        <div className='w-20 overflow-hidden rounded-full drop-shadow-md shadow-md'>
-          <img src={loginSignUpImage} alt="" className='w-full'/>
+        <div className='w-20 overflow-hidden rounded-full drop-shadow-md shadow-md relative'>
+          <img src={dataForm.image ? dataForm.image : loginSignUpImage} alt="" className='w-full'/>
+
+          <label htmlFor="profileImage">
+            <div className='absolut bottom-0 h-1/3 bg-slate-400 w-full text-center cursor-pointer bg-opacity-15'>
+              <p className='text-sm pt-1 text-black'>Upload</p>
+            </div>
+            <input type="file" id='profileImage' accept='image/*' className='hidden' onChange={handleUploadProfileImage}/>
+          </label>
         </div>
 
         <form className='w-full py-3 flex flex-col' onSubmit={handlerSubmit}>
