@@ -2,18 +2,25 @@ import React, { useState } from 'react'
 import logo from '../assest/logo.png'
 import { Link } from 'react-router-dom'
 import { FaUserLarge, FaCartShopping  } from "react-icons/fa6";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import {logoutRedux} from '../redux/userSlice'
+import toast from 'react-hot-toast';
 
 const Header = () => {
     const [showMenu, setShowMenu] = useState(false)
+
+    const dispatch = useDispatch()
     const userData = useSelector((state) => {
         return state.user
     })
-    console.log('user data state header')
-    console.log(userData)
 
     const handlerShowMenu = () => {
         setShowMenu(pre => !pre)
+    }
+
+    const handlLogout = () => {
+        dispatch(logoutRedux())
+        toast("logout successfully!!!");
     }
 
     return (
@@ -38,7 +45,7 @@ const Header = () => {
                         <div className='absolute text-white -top-2 -right-2 bg-red-500 h-4 w-4 m-0 p-0 text-sm text-center rounded-full '>0</div>
                     </div>
                     <div className='text-2xl text-slate-600 relative' onClick={handlerShowMenu}> 
-                        <div className='border-2 border-solid border-slate-700 p-1 rounded-full cursor-pointer h-10 w-10' >
+                        <div className='border-2 border-solid border-slate-700 p-1 rounded-full cursor-pointer h-10 w-10 overflow-hidden' >
                             {
                                 userData.image ?
                                 <img src={userData.image} alt="" className='h-full w-full rounded-full'/>
@@ -47,9 +54,13 @@ const Header = () => {
                         </div>
                         {
                             showMenu && (
-                                <div className='absolute text-base right-0 p-2 bg-white shadow drop-shadow flex flex-col'>
-                                    <Link to={'new_product'} className='whitespace-nowrap cursor-pointer'>New Product</Link>
-                                    <Link to={'login'} className='whitespace-nowrap cursor-pointer'>Login</Link>
+                                <div className='absolute text-base right-0 bg-white shadow drop-shadow flex flex-col'>
+                                    <Link to={'new_product'} className='whitespace-nowrap cursor-pointer p-2'>New Product</Link>
+                                    {
+                                        userData.email ?
+                                        <p className='p-2 text-black cursor-pointer hover:bg-red-500 hover:text-white' onClick={handlLogout}>Logout</p> :
+                                        <Link to={'login'} className='whitespace-nowrap cursor-pointer p-2'>Login</Link>
+                                    }
                                 </div>
                             )
                         }

@@ -7,6 +7,7 @@ import {toast} from 'react-hot-toast';
 import { useSelector, useDispatch } from 'react-redux'
 import {loginRedux} from '../redux/userSlice'
 
+
 const Login = () => {
   const [showPassWord, setShowPassWord] = useState(false)
   const [dataForm, setDataForm] = useState({
@@ -18,8 +19,6 @@ const Login = () => {
   const userData = useSelector((state) => {
     return state.user
   })
-  console.log("user data state login:")
-  console.log(userData)
   const dispatch = useDispatch()
 
   const handlerShowPassWord = () => {
