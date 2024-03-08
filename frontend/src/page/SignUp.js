@@ -4,7 +4,7 @@ import { BiSolidShow } from "react-icons/bi";
 import { BiSolidHide } from "react-icons/bi";
 import { Link, useNavigate } from 'react-router-dom'
 import { ImageToBase64 } from '../utility/imageToBase64'
-
+import { toast } from 'react-hot-toast'
 
 const SignUp = () => {
     const navigate = useNavigate()
@@ -46,15 +46,26 @@ const SignUp = () => {
       }
     })
   }
-
-    const handlerSubmit = (e) => {
+    console.log(process.env.REACT_APP_SERVER_DOMAIN)
+    const handlerSubmit = async (e) => {
         e.preventDefault();
         
         const {firstName, lastName, email, password, confirmPassword } = dataForm
         if(firstName && lastName && email && password && confirmPassword ) {
             if(password === confirmPassword) {
-                alert('Successfully!!!')
+              const fetchData = await fetch(`${process.env.REACT_APP_SERVER_DOMAIN}/signup`, {
+                method: 'POST',
+                headers: {
+                  "content-type": "application/json"
+                },
+                body: JSON.stringify(dataForm)
+              })
+              const data = await fetchData.json()
+
+              toast(data.message)
+              if(data.alert) {
                 navigate('/login')
+              }
             } else {
                 alert('Password and confirm password is not equal')
             }
