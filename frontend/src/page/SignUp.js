@@ -46,7 +46,6 @@ const SignUp = () => {
       }
     })
   }
-    console.log(process.env.REACT_APP_SERVER_DOMAIN)
     const handlerSubmit = async (e) => {
         e.preventDefault();
         

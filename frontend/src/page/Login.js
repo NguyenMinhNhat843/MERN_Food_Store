@@ -18,6 +18,7 @@ const Login = () => {
   const userData = useSelector((state) => {
     return state.user
   })
+  console.log("user data state login:")
   console.log(userData)
   const dispatch = useDispatch()
 

@@ -2,9 +2,16 @@ import React, { useState } from 'react'
 import logo from '../assest/logo.png'
 import { Link } from 'react-router-dom'
 import { FaUserLarge, FaCartShopping  } from "react-icons/fa6";
+import { useSelector } from 'react-redux';
 
 const Header = () => {
     const [showMenu, setShowMenu] = useState(false)
+    const userData = useSelector((state) => {
+        return state.user
+    })
+    console.log('user data state header')
+    console.log(userData)
+
     const handlerShowMenu = () => {
         setShowMenu(pre => !pre)
     }
@@ -31,8 +38,12 @@ const Header = () => {
                         <div className='absolute text-white -top-2 -right-2 bg-red-500 h-4 w-4 m-0 p-0 text-sm text-center rounded-full '>0</div>
                     </div>
                     <div className='text-2xl text-slate-600 relative' onClick={handlerShowMenu}> 
-                        <div className='border-2 border-solid border-slate-700 p-1 rounded-full cursor-pointer' >
-                            <FaUserLarge />
+                        <div className='border-2 border-solid border-slate-700 p-1 rounded-full cursor-pointer h-10 w-10' >
+                            {
+                                userData.image ?
+                                <img src={userData.image} alt="" className='h-full w-full rounded-full'/>
+                                : <FaUserLarge />
+                            }
                         </div>
                         {
                             showMenu && (
