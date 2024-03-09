@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import logo from '../assest/logo.png'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { FaUserLarge, FaCartShopping  } from "react-icons/fa6";
 import { useDispatch, useSelector } from 'react-redux';
 import {logoutRedux} from '../redux/userSlice'
@@ -8,6 +8,7 @@ import toast from 'react-hot-toast';
 
 const Header = () => {
     const [showMenu, setShowMenu] = useState(false)
+    const navigate = useNavigate()
 
     const dispatch = useDispatch()
     const userData = useSelector((state) => {
@@ -21,6 +22,7 @@ const Header = () => {
     const handlLogout = () => {
         dispatch(logoutRedux())
         toast("logout successfully!!!");
+        navigate('/login')
     }
 
     return (
@@ -55,7 +57,10 @@ const Header = () => {
                         {
                             showMenu && (
                                 <div className='absolute text-base right-0 bg-white shadow drop-shadow flex flex-col'>
-                                    <Link to={'new_product'} className='whitespace-nowrap cursor-pointer p-2'>New Product</Link>
+                                    {
+                                        userData.email === process.env.REACT_APP_ADMIN_EMAIL &&
+                                        <Link to={'/new_product'} className='whitespace-nowrap cursor-pointer p-2'>New Product</Link>
+                                    }
                                     {
                                         userData.email ?
                                         <p className='p-2 text-black cursor-pointer hover:bg-red-500 hover:text-white' onClick={handlLogout}>Logout</p> :

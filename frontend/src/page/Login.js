@@ -4,7 +4,7 @@ import { BiSolidShow } from "react-icons/bi";
 import { BiSolidHide } from "react-icons/bi";
 import { Link, useNavigate } from 'react-router-dom'
 import {toast} from 'react-hot-toast';
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import {loginRedux} from '../redux/userSlice'
 
 
@@ -16,9 +16,6 @@ const Login = () => {
   })
 
   const navigate = useNavigate()
-  const userData = useSelector((state) => {
-    return state.user
-  })
   const dispatch = useDispatch()
 
   const handlerShowPassWord = () => {
@@ -57,7 +54,6 @@ const Login = () => {
                 navigate('/')
               }, 1000)
             }
-            console.log(userData)
         } else {
             alert('Please enter required field')
         }
